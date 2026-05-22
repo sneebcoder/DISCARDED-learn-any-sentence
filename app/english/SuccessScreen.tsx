@@ -123,7 +123,6 @@ export default function SuccessScreen({ onClose, onNext }: SuccessScreenProps) {
                 zIndex: 2,
                 pointerEvents: "none",
                 top: s.top,
-                // @ts-expect-error dynamic positioning
                 right: s.right,
                 bottom: s.bottom,
                 left: s.left,

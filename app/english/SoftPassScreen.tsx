@@ -108,7 +108,6 @@ export default function SoftPassScreen({ onClose, onNext }: SoftPassScreenProps)
                 zIndex: 2,
                 pointerEvents: "none",
                 top: s.top,
-                // @ts-expect-error dynamic props
                 right: s.right,
                 bottom: s.bottom,
                 left: s.left,
