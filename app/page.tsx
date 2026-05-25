@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function LandingPage() {
   return (
     <main
@@ -35,10 +37,12 @@ export default function LandingPage() {
       >
         {/* Top row */}
         <div className="flex items-center gap-3" style={{ marginBottom: "clamp(48px, 8vw, 80px)" }}>
-          <img
+          <Image
             src="/mascot.png"
             alt="BabyBillion mascot"
-            style={{ width: 36, height: 36, objectFit: "contain", flexShrink: 0 }}
+            width={36}
+            height={36}
+            style={{ objectFit: "contain", flexShrink: 0 }}
           />
           <span
             style={{
