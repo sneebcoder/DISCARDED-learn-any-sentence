@@ -44,6 +44,7 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
 
   useEffect(() => {
     const audio = new Audio("/phonics-instruction.mp3");
+    audio.preload = "auto";
     audioRef.current = audio;
     const onEnded = () => setIsPlaying(false);
     audio.addEventListener("ended", onEnded);
@@ -158,7 +159,7 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
         const clean = transcript.toLowerCase().trim().replace(/[^a-z\s]/g, "");
         setDebugHeard(`heard: "${clean}"`);
         const words = clean.split(/\s+/);
-        const correct = words.some(w => ["pot", "pots", "pod"].includes(w));
+        const correct = words.some(w => ["pen", "pens", "pin"].includes(w));
 
         // Stop instruction audio before showing result screen
         if (audioRef.current) {
@@ -401,33 +402,31 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
             </svg>
           </button>
 
-          {/* Pot illustration */}
-          <div style={{ width: 170, height: 140, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 6, animation: "gentle-bob 3s ease-in-out infinite" }}>
-            <svg width="170" height="140" viewBox="0 0 170 140">
-              {/* Steam */}
-              <path d="M55 20 Q50 12 58 6 Q66 12 60 20" fill="none" stroke="#E0E0E0" strokeWidth="3" strokeLinecap="round" opacity="0.7" style={{ animation: "steam-rise 2s ease-in-out infinite" }} />
-              <path d="M80 14 Q75 6 82 0 Q90 6 85 14" fill="none" stroke="#E0E0E0" strokeWidth="3" strokeLinecap="round" opacity="0.7" style={{ animation: "steam-rise 2.3s ease-in-out infinite 0.5s" }} />
-              <path d="M105 20 Q100 12 108 6 Q116 12 110 20" fill="none" stroke="#E0E0E0" strokeWidth="3" strokeLinecap="round" opacity="0.7" style={{ animation: "steam-rise 2.1s ease-in-out infinite 0.2s" }} />
-              {/* Lid */}
-              <ellipse cx="85" cy="36" rx="55" ry="8" fill="#5A8FB8" stroke="#2C2C2A" strokeWidth="3" />
-              <rect x="35" y="34" width="100" height="6" rx="3" fill="#7BAFD4" stroke="#2C2C2A" strokeWidth="3" />
-              <circle cx="85" cy="28" r="6" fill="#FFB347" stroke="#2C2C2A" strokeWidth="3" />
-              {/* Body */}
-              <path d="M30 42 L30 95 Q30 115 50 120 L120 120 Q140 115 140 95 L140 42 Z" fill="#4A90E2" stroke="#2C2C2A" strokeWidth="3.5" strokeLinejoin="round" />
-              <ellipse cx="50" cy="65" rx="6" ry="20" fill="#7BAFD4" opacity="0.6" />
-              {/* Handles */}
-              <path d="M30 55 Q12 55 12 70 Q12 85 30 80" fill="none" stroke="#2C2C2A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M30 55 Q15 55 15 70 Q15 82 30 78" fill="#4A90E2" />
-              <path d="M140 55 Q158 55 158 70 Q158 85 140 80" fill="none" stroke="#2C2C2A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M140 55 Q155 55 155 70 Q155 82 140 78" fill="#4A90E2" />
-              {/* Face */}
-              <circle cx="68" cy="78" r="4" fill="#2C2C2A" />
-              <circle cx="102" cy="78" r="4" fill="#2C2C2A" />
-              <circle cx="69" cy="76.5" r="1.2" fill="#fff" />
-              <circle cx="103" cy="76.5" r="1.2" fill="#fff" />
-              <path d="M75 92 Q85 100 95 92" fill="none" stroke="#2C2C2A" strokeWidth="3" strokeLinecap="round" />
-              <ellipse cx="58" cy="90" rx="5" ry="3" fill="#FF8DA1" opacity="0.6" />
-              <ellipse cx="112" cy="90" rx="5" ry="3" fill="#FF8DA1" opacity="0.6" />
+          {/* Pen illustration */}
+          <div style={{ width: 170, height: 170, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 6, animation: "gentle-bob 3s ease-in-out infinite" }}>
+            <svg width="170" height="170" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+              <g transform="rotate(28, 160, 160)">
+                <rect x="148" y="36" width="24" height="22" rx="4" fill="#1E2A6B" stroke="#0F1742" strokeWidth="2"/>
+                <rect x="152" y="40" width="5" height="14" rx="2.5" fill="#3949AB" opacity="0.6"/>
+                <rect x="142" y="56" width="36" height="6" fill="#E0A92B" stroke="#A67A1A" strokeWidth="1.5"/>
+                <rect x="140" y="60" width="40" height="50" rx="3" fill="#1A5FA8" stroke="#0E3D6F" strokeWidth="2.5"/>
+                <rect x="146" y="64" width="6" height="40" rx="3" fill="#4A8BC8" opacity="0.55"/>
+                <rect x="172" y="62" width="6" height="46" fill="#0E3D6F" opacity="0.4"/>
+                <path d="M134 64 Q132 70 134 86 L134 108 Q134 112 138 112 L138 76 Q138 70 142 66 Z" fill="#2A78C2" stroke="#0E3D6F" strokeWidth="2" strokeLinejoin="round"/>
+                <rect x="135" y="76" width="2" height="28" fill="#5C9DD8" opacity="0.7"/>
+                <rect x="140" y="110" width="40" height="10" fill="#E0A92B" stroke="#A67A1A" strokeWidth="1.5"/>
+                <rect x="143" y="112" width="3" height="6" fill="#F5D27A" opacity="0.8"/>
+                <rect x="140" y="120" width="40" height="115" rx="2" fill="#1F6FB5" stroke="#0E3D6F" strokeWidth="2.5"/>
+                <rect x="146" y="124" width="7" height="105" rx="3.5" fill="#4A8BC8" opacity="0.55"/>
+                <rect x="172" y="124" width="6" height="107" fill="#0E3D6F" opacity="0.35"/>
+                <rect x="140" y="235" width="40" height="9" fill="#E0A92B" stroke="#A67A1A" strokeWidth="1.5"/>
+                <rect x="143" y="237" width="3" height="5" fill="#F5D27A" opacity="0.8"/>
+                <path d="M140 244 L180 244 L168 274 L152 274 Z" fill="#7EC2E8" stroke="#3F8BC8" strokeWidth="2.5" strokeLinejoin="round"/>
+                <path d="M145 247 L150 247 L151 270 L148 270 Z" fill="#B5DBF0" opacity="0.8"/>
+                <path d="M175 247 L178 247 L170 272 L168 272 Z" fill="#3F8BC8" opacity="0.4"/>
+                <path d="M152 274 L160 290 L168 274 Z" fill="#3a3a3a" stroke="#1a1a1a" strokeWidth="1.5" strokeLinejoin="round"/>
+                <circle cx="160" cy="289" r="1.8" fill="#1a1a1a"/>
+              </g>
             </svg>
           </div>
 
@@ -467,7 +466,7 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
                 letterSpacing: -1,
               }}
             >
-              pot
+              pen
             </h2>
           </div>
         </div>

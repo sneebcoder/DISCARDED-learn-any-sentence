@@ -5,6 +5,8 @@ import Link from "next/link";
 import PhonicsScreen from "./PhonicsScreen";
 import SuccessScreen from "./SuccessScreen";
 import SoftPassScreen from "./SoftPassScreen";
+import OppositesScreen from "./OppositesScreen";
+import OppositesMCQScreen from "./OppositesMCQScreen";
 
 const CARDS = [
   {
@@ -14,6 +16,9 @@ const CARDS = [
     pill: "+ say it",
     duration: "0:18",
     thumbClass: "phonics",
+    videoSrc: "/lesson.mp4",
+    goPractice: true,
+    practiceModal: "phonics" as ModalState,
     thumbContent: (
       <span style={{ fontFamily: "var(--font-fredoka)", color: "#fff", fontSize: 32, fontWeight: 700 }}>
         P p
@@ -27,6 +32,9 @@ const CARDS = [
     pill: "+ match it",
     duration: "0:22",
     thumbClass: "opposites",
+    videoSrc: "/opposites.mp4",
+    goPractice: true,
+    practiceModal: "opposites" as ModalState,
     thumbContent: (
       <svg width="48" height="48" viewBox="0 0 24 24" fill="white" opacity={0.9}>
         <path d="M7 14l5-5 5 5z" />
@@ -36,32 +44,17 @@ const CARDS = [
   },
   {
     section: "Prepositions",
-    title: "On, In, Under",
+    title: "Near",
     desc: "Where is the cat? Drag to place it.",
     pill: "+ place it",
     duration: "0:20",
     thumbClass: "prepositions",
+    videoSrc: "/prepositions.mp4",
+    goPractice: false,
     thumbContent: (
       <svg width="48" height="48" viewBox="0 0 24 24" fill="white" opacity={0.9}>
         <rect x="4" y="14" width="16" height="6" rx="1" fill="white" />
         <circle cx="12" cy="9" r="3" fill="white" />
-      </svg>
-    ),
-  },
-  {
-    section: "Animal sounds",
-    title: "Who says what?",
-    desc: "Hear the sound, find the animal.",
-    pill: "+ guess it",
-    duration: "0:25",
-    thumbClass: "animals",
-    thumbContent: (
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="white" opacity={0.9}>
-        <circle cx="12" cy="14" r="6" />
-        <circle cx="9" cy="13" r="1.2" fill="#4A7728" />
-        <circle cx="15" cy="13" r="1.2" fill="#4A7728" />
-        <ellipse cx="6" cy="9" rx="2.5" ry="3.5" />
-        <ellipse cx="18" cy="9" rx="2.5" ry="3.5" />
       </svg>
     ),
   },
@@ -104,11 +97,8 @@ function PracticeBadge() {
   );
 }
 
-function VideoModal({ onClose, onEnded }: { onClose: () => void; onEnded: () => void }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
+function VideoModal({ src, onClose, onEnded }: { src: string; onClose: () => void; onEnded: () => void }) {
   useEffect(() => {
-    videoRef.current?.play();
     const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -154,9 +144,9 @@ function VideoModal({ onClose, onEnded }: { onClose: () => void; onEnded: () => 
 
       {/* Video */}
       <video
-        ref={videoRef}
-        src="/lesson.mp4"
+        src={src}
         controls
+        autoPlay
         playsInline
         onEnded={onEnded}
         onClick={(e) => e.stopPropagation()}
@@ -172,10 +162,11 @@ function VideoModal({ onClose, onEnded }: { onClose: () => void; onEnded: () => 
   );
 }
 
-type ModalState = null | "video" | "phonics" | "success" | "softpass";
+type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposites" | "opposites-mcq";
 
 export default function EnglishClient() {
   const [modal, setModal] = useState<ModalState>(null);
+  const activeCard = useRef<typeof CARDS[0] | null>(null);
 
   return (
     <div
@@ -295,7 +286,7 @@ export default function EnglishClient() {
             </div>
 
             <div
-              onClick={() => setModal("video")}
+              onClick={() => { activeCard.current = card; setModal("video"); }}
               style={{
                 background: "#fff",
                 borderRadius: 22,
@@ -391,8 +382,9 @@ export default function EnglishClient() {
       {/* Video modal */}
       {modal === "video" && (
         <VideoModal
+          src={activeCard.current?.videoSrc ?? "/lesson.mp4"}
           onClose={() => setModal(null)}
-          onEnded={() => setModal("phonics")}
+          onEnded={() => setModal(activeCard.current?.goPractice ? (activeCard.current.practiceModal ?? null) : null)}
         />
       )}
 
@@ -410,6 +402,12 @@ export default function EnglishClient() {
       )}
       {modal === "softpass" && (
         <SoftPassScreen onClose={() => setModal(null)} onNext={() => setModal(null)} />
+      )}
+      {modal === "opposites" && (
+        <OppositesScreen onClose={() => setModal(null)} onNext={() => setModal("opposites-mcq")} />
+      )}
+      {modal === "opposites-mcq" && (
+        <OppositesMCQScreen onClose={() => setModal(null)} />
       )}
     </div>
   );
