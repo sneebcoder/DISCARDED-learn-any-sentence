@@ -8,6 +8,7 @@ import SoftPassScreen from "./SoftPassScreen";
 import OppositesScreen from "./OppositesScreen";
 import OppositesMCQScreen from "./OppositesMCQScreen";
 import PrepositionsScreen from "./PrepositionsScreen";
+import PrepositionsDragScreen from "./PrepositionsDragScreen";
 
 const CARDS = [
   {
@@ -164,7 +165,7 @@ function VideoModal({ src, onClose, onEnded }: { src: string; onClose: () => voi
   );
 }
 
-type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposites" | "opposites-mcq" | "prepositions";
+type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposites" | "opposites-mcq" | "prepositions" | "prepositions-drag";
 
 export default function EnglishClient() {
   const [modal, setModal] = useState<ModalState>(null);
@@ -412,7 +413,10 @@ export default function EnglishClient() {
         <OppositesMCQScreen onClose={() => setModal(null)} />
       )}
       {modal === "prepositions" && (
-        <PrepositionsScreen onClose={() => setModal(null)} />
+        <PrepositionsScreen onClose={() => setModal(null)} onNext={() => setModal("prepositions-drag")} />
+      )}
+      {modal === "prepositions-drag" && (
+        <PrepositionsDragScreen onClose={() => setModal(null)} />
       )}
     </div>
   );

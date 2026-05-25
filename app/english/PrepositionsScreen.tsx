@@ -4,9 +4,10 @@ import { useState, useEffect, useRef } from "react";
 
 interface PrepositionsScreenProps {
   onClose: () => void;
+  onNext: () => void;
 }
 
-export default function PrepositionsScreen({ onClose }: PrepositionsScreenProps) {
+export default function PrepositionsScreen({ onClose, onNext }: PrepositionsScreenProps) {
   const [selected, setSelected] = useState(false);
   const [nextEnabled, setNextEnabled] = useState(false);
   const [wrongShake, setWrongShake] = useState(false);
@@ -179,7 +180,7 @@ export default function PrepositionsScreen({ onClose }: PrepositionsScreenProps)
 
         {/* Next CTA */}
         <button
-          onClick={nextEnabled ? onClose : undefined}
+          onClick={nextEnabled ? onNext : undefined}
           disabled={!nextEnabled}
           style={{
             width: "100%",
