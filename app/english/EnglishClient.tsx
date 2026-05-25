@@ -7,6 +7,7 @@ import SuccessScreen from "./SuccessScreen";
 import SoftPassScreen from "./SoftPassScreen";
 import OppositesScreen from "./OppositesScreen";
 import OppositesMCQScreen from "./OppositesMCQScreen";
+import PrepositionsScreen from "./PrepositionsScreen";
 
 const CARDS = [
   {
@@ -50,7 +51,8 @@ const CARDS = [
     duration: "0:20",
     thumbClass: "prepositions",
     videoSrc: "/prepositions.mp4",
-    goPractice: false,
+    goPractice: true,
+    practiceModal: "prepositions" as ModalState,
     thumbContent: (
       <svg width="48" height="48" viewBox="0 0 24 24" fill="white" opacity={0.9}>
         <rect x="4" y="14" width="16" height="6" rx="1" fill="white" />
@@ -162,7 +164,7 @@ function VideoModal({ src, onClose, onEnded }: { src: string; onClose: () => voi
   );
 }
 
-type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposites" | "opposites-mcq";
+type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposites" | "opposites-mcq" | "prepositions";
 
 export default function EnglishClient() {
   const [modal, setModal] = useState<ModalState>(null);
@@ -408,6 +410,9 @@ export default function EnglishClient() {
       )}
       {modal === "opposites-mcq" && (
         <OppositesMCQScreen onClose={() => setModal(null)} />
+      )}
+      {modal === "prepositions" && (
+        <PrepositionsScreen onClose={() => setModal(null)} />
       )}
     </div>
   );
