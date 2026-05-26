@@ -8,7 +8,7 @@ interface OppositesMCQScreenProps {
 
 export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps) {
   const [selected, setSelected] = useState<"up" | "down" | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [nextEnabled, setNextEnabled] = useState(false);
   const [wrongShake, setWrongShake] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -21,19 +21,16 @@ export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps)
     return () => clearTimeout(timer);
   }, []);
 
-  function playAudio(src: string) {
+  function handleSpeaker() {
     if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
-    const a = new Audio(src);
+    const a = new Audio("/opposites-mcq-question.mp3");
     audioRef.current = a;
     a.play().catch(() => {});
   }
 
-  function handleSpeaker() { playAudio("/opposites-mcq-question.mp3"); }
-
   function handleTile(val: "up" | "down") {
-    if (submitted) return;
+    if (selected === "down") return;
     if (val === "up") {
-      // wrong choice — play word audio first, then shake + error sound after it ends
       setSelected(null);
       if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
       const a = new Audio("/opposites-word-up.mp3");
@@ -46,19 +43,22 @@ export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps)
       a.addEventListener("ended", onEnded, { once: true });
       a.play().catch(() => { onEnded(); });
     } else {
-      // correct choice — select it
       setSelected("down");
-      playAudio("/opposites-word-down.mp3");
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
+      const a = new Audio("/opposites-word-down.mp3");
+      audioRef.current = a;
+      const onEnded = () => {
+        const yay = new Audio("/yay.mp3");
+        audioRef.current = yay;
+        yay.addEventListener("ended", () => setNextEnabled(true), { once: true });
+        yay.play().catch(() => setNextEnabled(true));
+      };
+      a.addEventListener("ended", onEnded, { once: true });
+      a.play().catch(() => { onEnded(); });
     }
   }
 
-  function handleSubmit() {
-    if (!selected || submitted) return;
-    setSubmitted(true);
-    new Audio("/yay.mp3").play().catch(() => {});
-  }
-
-  const bgColor = submitted ? "#D9F3DD" : "#EDE7F6";
+  const bgColor = selected === "down" ? "#D9F3DD" : "#EDE7F6";
 
   return (
     <div style={{ position: "fixed", inset: 0, background: bgColor, zIndex: 200, display: "flex", flexDirection: "column", fontFamily: "var(--font-baloo2), sans-serif", overflow: "hidden", transition: "background 0.5s ease" }}>
@@ -112,9 +112,9 @@ export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps)
               width: 150, height: 160, borderRadius: 26, display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "space-between", padding: "20px 12px 16px",
               background: "linear-gradient(180deg, #E0EEFF 0%, #AECFFF 100%)",
-              border: selected === "down" ? "3.5px solid #7B1FA2" : "3.5px solid transparent",
-              boxShadow: selected === "down" ? "0 0 0 4px rgba(123,31,162,0.18), 0 7px 0 rgba(0,0,0,0.09)" : "0 7px 0 rgba(0,0,0,0.09), 0 14px 28px rgba(0,0,0,0.05)",
-              cursor: submitted ? "default" : "pointer", flexShrink: 0, transition: "border 0.15s, box-shadow 0.15s",
+              border: selected === "down" ? "3.5px solid #1D9E75" : "3.5px solid transparent",
+              boxShadow: selected === "down" ? "0 0 0 4px rgba(29,158,117,0.22), 0 7px 0 rgba(0,0,0,0.09)" : "0 7px 0 rgba(0,0,0,0.09), 0 14px 28px rgba(0,0,0,0.05)",
+              cursor: selected === "down" ? "default" : "pointer", flexShrink: 0, transition: "border 0.15s, box-shadow 0.15s",
             }}
           >
             <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -134,7 +134,7 @@ export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps)
               background: "linear-gradient(180deg, #F3E5F5 0%, #CE93D8 100%)",
               border: wrongShake ? "3.5px solid #E07B00" : "3.5px solid transparent",
               boxShadow: wrongShake ? "0 0 0 4px rgba(224,123,0,0.2), 0 7px 0 rgba(0,0,0,0.09)" : "0 7px 0 rgba(0,0,0,0.09), 0 14px 28px rgba(0,0,0,0.05)",
-              cursor: submitted ? "default" : "pointer", flexShrink: 0,
+              cursor: selected === "down" ? "default" : "pointer", flexShrink: 0,
               animation: wrongShake ? "mcq-shake 0.4s ease-out" : "none",
               transition: "border 0.15s, box-shadow 0.15s",
             }}
@@ -151,11 +151,11 @@ export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps)
 
         {/* CTA */}
         <button
-          onClick={submitted ? onClose : handleSubmit}
-          disabled={!selected && !submitted}
+          onClick={nextEnabled ? onClose : undefined}
+          disabled={!nextEnabled}
           style={{
             width: "100%",
-            background: submitted ? "#1D9E75" : selected ? "#7B1FA2" : "rgba(123,31,162,0.25)",
+            background: nextEnabled ? "#1D9E75" : "rgba(29,158,117,0.25)",
             color: "#fff",
             border: "none",
             borderRadius: 20,
@@ -163,13 +163,13 @@ export default function OppositesMCQScreen({ onClose }: OppositesMCQScreenProps)
             fontFamily: "var(--font-fredoka)",
             fontSize: 20,
             fontWeight: 700,
-            boxShadow: submitted ? "0 6px 0 #0F6E56" : selected ? "0 6px 0 #4A0080" : "none",
-            cursor: selected || submitted ? "pointer" : "default",
+            boxShadow: nextEnabled ? "0 6px 0 #0F6E56" : "none",
+            cursor: nextEnabled ? "pointer" : "default",
             transition: "background 0.3s, box-shadow 0.3s",
             marginTop: "auto",
           }}
         >
-          {submitted ? "Go Home" : "Submit"}
+          Go Home
         </button>
 
       </div>
