@@ -271,18 +271,23 @@ export default function OppositesScreen({ onClose, onNext }: OppositesScreenProp
         </div>
 
         {/* Next CTA */}
-        {allCorrect && (
-          <button
-            onClick={onNext}
-            style={{
-              width: "100%", background: "#1D9E75", color: "#fff", border: "none",
-              borderRadius: 20, padding: "16px", fontFamily: "var(--font-fredoka)",
-              fontSize: 20, fontWeight: 700, boxShadow: "0 6px 0 #0F6E56", cursor: "pointer",
-            }}
-          >
-            Next
-          </button>
-        )}
+        <button
+          onClick={allCorrect ? onNext : undefined}
+          disabled={!allCorrect}
+          style={{
+            width: "100%",
+            background: allCorrect ? "#1D9E75" : "rgba(29,158,117,0.25)",
+            color: "#fff", border: "none",
+            borderRadius: 20, padding: "16px", fontFamily: "var(--font-fredoka)",
+            fontSize: 20, fontWeight: 700,
+            boxShadow: allCorrect ? "0 6px 0 #0F6E56" : "none",
+            cursor: allCorrect ? "pointer" : "default",
+            transition: "background 0.3s, box-shadow 0.3s",
+            marginTop: "auto",
+          }}
+        >
+          Next
+        </button>
 
       </div>
 
