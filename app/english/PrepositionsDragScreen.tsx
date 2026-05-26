@@ -108,7 +108,9 @@ export default function PrepositionsDragScreen({ onClose }: PrepositionsDragScre
           requestAnimationFrame(() => setCatPixelPos({ x: snapX, y: snapY }));
         }
 
+        if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
         const yay = new Audio("/yay.mp3");
+        yay.preload = "auto";
         audioRef.current = yay;
         yay.addEventListener("ended", () => {
           const correct = new Audio("/prepositions-correct.mp3");
