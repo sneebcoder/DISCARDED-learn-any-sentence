@@ -169,6 +169,7 @@ type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposit
 
 export default function EnglishClient() {
   const [modal, setModal] = useState<ModalState>(null);
+  const [showOnboarding, setShowOnboarding] = useState(true);
   const activeCard = useRef<typeof CARDS[0] | null>(null);
 
   return (
@@ -418,6 +419,63 @@ export default function EnglishClient() {
       {modal === "prepositions-drag" && (
         <PrepositionsDragScreen onClose={() => setModal(null)} />
       )}
+
+      {/* Onboarding overlay */}
+      {showOnboarding && (
+        <div
+          onClick={() => setShowOnboarding(false)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)",
+            zIndex: 500, display: "flex", alignItems: "flex-end", justifyContent: "center",
+            padding: "0 16px 28px", backdropFilter: "blur(2px)",
+            animation: "onb-fade-in 0.3s ease-out",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: "#1a1a1a", borderRadius: 24, padding: "22px 20px 20px",
+              width: "100%", maxWidth: 648,
+              border: "1px solid rgba(255,255,255,0.1)",
+              boxShadow: "0 -8px 40px rgba(0,0,0,0.4)",
+              animation: "onb-slide-up 0.35s ease-out",
+            }}
+          >
+            <p style={{ fontFamily: "var(--font-fredoka)", fontSize: 10, fontWeight: 600, letterSpacing: "1.8px", textTransform: "uppercase", color: "#D85A30", margin: "0 0 10px" }}>
+              How to use this prototype
+            </p>
+            <p style={{ fontFamily: "var(--font-baloo2), sans-serif", fontSize: 13, fontWeight: 400, lineHeight: 1.65, color: "rgba(255,255,255,0.82)", margin: "0 0 8px" }}>
+              After every reel, kids get a <strong style={{ color: "#fff", fontWeight: 600 }}>practice activity</strong> based on what they just watched. There are 3 here — <strong style={{ color: "#fff", fontWeight: 600 }}>phonics, opposites, and prepositions</strong> — each with a different interaction.
+            </p>
+            <p style={{ fontFamily: "var(--font-baloo2), sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)", margin: "0 0 8px", lineHeight: 1.5 }}>
+              Watch the reel first, then do the activity.
+            </p>
+            <p style={{ fontFamily: "var(--font-baloo2), sans-serif", fontSize: 13, fontWeight: 700, color: "#fff", margin: "0 0 18px" }}>
+              🔊 Turn your volume up before you start.
+            </p>
+            <button
+              onClick={() => setShowOnboarding(false)}
+              style={{
+                background: "#D85A30", color: "#fff", border: "none", width: "100%",
+                padding: "13px 20px", borderRadius: 100,
+                fontFamily: "var(--font-fredoka)", fontSize: 15, fontWeight: 600,
+                cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                gap: 8, boxShadow: "0 4px 16px rgba(216,90,48,0.35)",
+              }}
+            >
+              Got it, let&apos;s go
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes onb-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes onb-slide-up { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+      `}</style>
     </div>
   );
 }
