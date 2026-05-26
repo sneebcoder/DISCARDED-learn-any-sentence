@@ -158,7 +158,7 @@ export default function PrepositionsDragScreen({ onClose }: PrepositionsDragScre
     : {
         position: "absolute",
         width: 80, height: 80,
-        top: 36, left: "50%",
+        top: 44, left: "50%",
         transform: "translateX(-50%)",
         cursor: "grab", touchAction: "none", zIndex: 10, userSelect: "none",
         filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.12))",
@@ -167,8 +167,8 @@ export default function PrepositionsDragScreen({ onClose }: PrepositionsDragScre
 
   const dropZoneStyle: React.CSSProperties = {
     position: "absolute",
-    width: 90, height: 90,
-    bottom: 80, left: "calc(50% + 56px)",
+    width: 82, height: 82,
+    bottom: 90, left: "calc(50% + 10px)",
     borderRadius: 18,
     border: `3px dashed ${dropCorrect ? "#1D9E75" : dropHover ? "#E07B00" : "#CFD8DC"}`,
     background: dropCorrect ? "rgba(29,158,117,0.1)" : dropHover ? "rgba(224,123,0,0.08)" : "rgba(207,216,220,0.08)",
@@ -220,10 +220,10 @@ export default function PrepositionsDragScreen({ onClose }: PrepositionsDragScre
         </div>
 
         {/* Arena */}
-        <div ref={arenaRef} style={{ width: "100%", background: "#fff", borderRadius: 26, boxShadow: "0 6px 0 rgba(0,0,0,0.08), 0 12px 24px rgba(0,0,0,0.05)", position: "relative", height: 320, flexShrink: 0, overflow: "visible" }}>
+        <div ref={arenaRef} style={{ width: "100%", background: "#fff", borderRadius: 26, boxShadow: "0 6px 0 rgba(0,0,0,0.08), 0 12px 24px rgba(0,0,0,0.05)", position: "relative", flex: 1, minHeight: 260, overflow: "visible" }}>
 
           {/* Box */}
-          <div style={{ position: "absolute", bottom: 80, left: "calc(50% - 50px)", zIndex: 2, pointerEvents: "none" }}>
+          <div style={{ position: "absolute", bottom: 90, left: "calc(50% - 78px)", zIndex: 2, pointerEvents: "none" }}>
             <svg width="100" height="86" viewBox="0 0 100 86">
               <rect x="0" y="22" width="64" height="54" rx="5" fill="#FFB74D" stroke="#BF360C" strokeWidth="3.5" strokeLinejoin="round"/>
               <path d="M0 22 L18 4 L82 4 L64 22 Z" fill="#FFCC80" stroke="#BF360C" strokeWidth="3.5" strokeLinejoin="round"/>
@@ -238,7 +238,7 @@ export default function PrepositionsDragScreen({ onClose }: PrepositionsDragScre
 
           {/* Cat */}
           <div ref={catRef} style={catStyle} onMouseDown={onPointerDown} onTouchStart={onPointerDown}>
-            <svg width="80" height="80" viewBox="0 0 60 70">
+            <svg width="80" height="80" viewBox="0 0 60 70" style={{ overflow: "visible" }}>
               <path d="M44 58 Q60 56 58 38 Q56 24 44 26" fill="none" stroke="#F57C00" strokeWidth="5" strokeLinecap="round"/>
               <path d="M44 58 Q60 56 58 38 Q56 24 44 26" fill="none" stroke="#FFB74D" strokeWidth="2.5" strokeLinecap="round"/>
               <ellipse cx="28" cy="46" rx="22" ry="18" fill="#FFB74D" stroke="#BF360C" strokeWidth="2.5"/>
@@ -297,7 +297,7 @@ export default function PrepositionsDragScreen({ onClose }: PrepositionsDragScre
       <style>{`
         @keyframes prep-drag-ring { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
         @keyframes prep-drag-twinkle { 0%, 100% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.2); } }
-        @keyframes prep-drag-cat-float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+        @keyframes prep-drag-cat-float { 0%, 100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
         @keyframes prep-drag-zone-pop { 0% { box-shadow: 0 0 0 0 rgba(29,158,117,.6); } 100% { box-shadow: 0 0 0 14px rgba(29,158,117,0); } }
         @keyframes prep-drag-zone-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(7px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
       `}</style>
