@@ -456,7 +456,7 @@ export default function EnglishClient() {
             <button
               onClick={() => setShowOnboarding(false)}
               style={{
-                background: "#D85A30", color: "#fff", border: "none", width: "100%",
+                background: "#9B3D1E", color: "#fff", border: "none", width: "100%",
                 padding: "13px 20px", borderRadius: 100,
                 fontFamily: "var(--font-fredoka)", fontSize: 15, fontWeight: 600,
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
@@ -464,21 +464,22 @@ export default function EnglishClient() {
                 position: "relative", overflow: "hidden",
               }}
             >
-              Got it, let&apos;s go
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
-              </svg>
-              {/* Progress bar */}
+              {/* Fill sweeps left → right */}
               <div
                 onAnimationEnd={() => setShowOnboarding(false)}
                 style={{
-                  position: "absolute", bottom: 0, left: 0,
-                  height: 3, width: "100%",
-                  background: "rgba(255,255,255,0.45)",
-                  borderRadius: "0 0 100px 100px",
+                  position: "absolute", inset: 0,
+                  background: "#D85A30",
+                  width: "0%",
                   animation: "onb-progress 6s linear forwards",
                 }}
               />
+              <span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: 8 }}>
+                Got it, let&apos;s go
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+                </svg>
+              </span>
             </button>
           </div>
         </div>
@@ -487,7 +488,7 @@ export default function EnglishClient() {
       <style>{`
         @keyframes onb-fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
         @keyframes onb-slide-up { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
-        @keyframes onb-progress { 0% { width: 100%; } 100% { width: 0%; } }
+        @keyframes onb-progress { 0% { width: 0%; } 100% { width: 100%; } }
       `}</style>
     </div>
   );
