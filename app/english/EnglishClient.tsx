@@ -373,18 +373,10 @@ export default function EnglishClient() {
           zIndex: 10,
         }}
       >
-        {[
-          { label: "Home", active: true, icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 3L2 12h3v8h5v-6h4v6h5v-8h3z" /></svg> },
-          { label: "Shorts", active: false, icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2"><polygon points="5,3 19,12 5,21" fill="rgba(255,255,255,0.5)" /></svg> },
-          { label: "Library", active: false, icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2"><path d="M4 4h16v16H4z M4 9h16 M9 4v16" /></svg> },
-        ].map((item) => (
-          <div key={item.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, cursor: "pointer" }}>
-            {item.icon}
-            <span style={{ fontFamily: "var(--font-fredoka)", fontSize: 10, fontWeight: 500, color: item.active ? "#fff" : "rgba(255,255,255,0.5)" }}>
-              {item.label}
-            </span>
-          </div>
-        ))}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 3L2 12h3v8h5v-6h4v6h5v-8h3z" /></svg>
+          <span style={{ fontFamily: "var(--font-fredoka)", fontSize: 10, fontWeight: 500, color: "#fff" }}>Home</span>
+        </div>
       </div>
 
       {/* Video modal */}
