@@ -290,7 +290,7 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
           padding: "16px 20px 14px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-start",
           position: "relative",
           zIndex: 5,
           maxWidth: 680,
@@ -321,11 +321,6 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
           </svg>
         </button>
 
-        {/* Language toggle */}
-        <div style={{ background: "#fff", borderRadius: 20, padding: 4, display: "flex", boxShadow: "0 3px 0 rgba(0,0,0,0.08)" }}>
-          <div style={{ background: "#00A8E8", color: "#fff", padding: "4px 10px", borderRadius: 16, fontFamily: "var(--font-fredoka)", fontSize: 12, fontWeight: 600 }}>EN</div>
-          <div style={{ color: "#5F5E5A", padding: "4px 10px", fontFamily: "var(--font-fredoka)", fontSize: 12, fontWeight: 600 }}>हिं</div>
-        </div>
       </div>
 
       {/* Main content */}
