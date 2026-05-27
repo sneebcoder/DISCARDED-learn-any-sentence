@@ -170,7 +170,15 @@ type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposit
 export default function EnglishClient() {
   const [modal, setModal] = useState<ModalState>(null);
   const [showOnboarding, setShowOnboarding] = useState(true);
+  const [countdown, setCountdown] = useState(6);
   const activeCard = useRef<typeof CARDS[0] | null>(null);
+
+  useEffect(() => {
+    if (!showOnboarding) return;
+    if (countdown <= 0) { setShowOnboarding(false); return; }
+    const t = setTimeout(() => setCountdown(c => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [countdown, showOnboarding]);
 
   return (
     <div
@@ -457,15 +465,28 @@ export default function EnglishClient() {
               onClick={() => setShowOnboarding(false)}
               style={{
                 background: "#D85A30", color: "#fff", border: "none", width: "100%",
-                padding: "13px 20px", borderRadius: 100,
+                padding: "11px 20px", borderRadius: 100,
                 fontFamily: "var(--font-fredoka)", fontSize: 15, fontWeight: 600,
                 cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-                gap: 8, boxShadow: "0 4px 16px rgba(216,90,48,0.35)",
+                gap: 10, boxShadow: "0 4px 16px rgba(216,90,48,0.35)",
               }}
             >
               Got it, let&apos;s go
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/>
+              {/* Countdown ring */}
+              <svg width="30" height="30" viewBox="0 0 30 30" style={{ flexShrink: 0 }}>
+                <circle cx="15" cy="15" r="11" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2.5"/>
+                <circle
+                  cx="15" cy="15" r="11"
+                  fill="none" stroke="white" strokeWidth="2.5"
+                  strokeDasharray="69.1"
+                  strokeDashoffset={69.1 * (countdown / 6)}
+                  strokeLinecap="round"
+                  transform="rotate(-90 15 15)"
+                  style={{ transition: "stroke-dashoffset 0.95s linear" }}
+                />
+                <text x="15" y="19.5" textAnchor="middle" fill="white" fontSize="10" fontWeight="700" fontFamily="var(--font-fredoka)">
+                  {countdown}
+                </text>
               </svg>
             </button>
           </div>
