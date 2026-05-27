@@ -16,8 +16,8 @@ const SPARKLES = [
 export default function SoftPassScreen({ onClose, onNext }: SoftPassScreenProps) {
   useEffect(() => {
     const audio = new Audio("/thinking.mp3");
-    audio.play().catch(() => {});
-    return () => { audio.pause(); };
+    const timer = setTimeout(() => { audio.play().catch(() => {}); }, 200);
+    return () => { clearTimeout(timer); audio.pause(); };
   }, []);
 
   return (

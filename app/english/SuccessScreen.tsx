@@ -27,8 +27,8 @@ function SparklesStar({ size, color, stroke, style }: { size: number; color: str
 export default function SuccessScreen({ onClose, onNext }: SuccessScreenProps) {
   useEffect(() => {
     const audio = new Audio("/yay.mp3");
-    audio.play().catch(() => {});
-    return () => { audio.pause(); };
+    const timer = setTimeout(() => { audio.play().catch(() => {}); }, 200);
+    return () => { clearTimeout(timer); audio.pause(); };
   }, []);
 
   return (

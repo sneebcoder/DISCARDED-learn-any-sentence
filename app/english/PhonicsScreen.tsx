@@ -52,7 +52,7 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
     const timer = setTimeout(() => {
       setIsPlaying(true);
       audio.play().catch(() => setIsPlaying(false));
-    }, 2000);
+    }, 500);
     autoPlayTimerRef.current = timer;
 
     return () => {
@@ -85,6 +85,7 @@ export default function PhonicsScreen({ onClose, onResult }: PhonicsScreenProps)
   }
 
   async function handleMicTap() {
+    if (micStateRef.current === "recording") { stopRecording(); return; }
     if (micStateRef.current !== "idle") return;
 
     // Kill auto-play timer and stop all audio before recording so speaker output
