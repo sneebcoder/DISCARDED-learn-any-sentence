@@ -21,6 +21,7 @@ const CARDS = [
     videoSrc: "/lesson.mp4",
     goPractice: true,
     practiceModal: "phonics" as ModalState,
+    badge: "1 practice activity",
     thumbContent: (
       <span style={{ fontFamily: "var(--font-fredoka)", color: "#fff", fontSize: 32, fontWeight: 700 }}>
         P p
@@ -37,6 +38,7 @@ const CARDS = [
     videoSrc: "/opposites.mp4",
     goPractice: true,
     practiceModal: "opposites" as ModalState,
+    badge: "2 practice activities",
     thumbContent: (
       <svg width="48" height="48" viewBox="0 0 24 24" fill="white" opacity={0.9}>
         <path d="M7 14l5-5 5 5z" />
@@ -54,6 +56,7 @@ const CARDS = [
     videoSrc: "/prepositions.mp4",
     goPractice: true,
     practiceModal: "prepositions" as ModalState,
+    badge: "2 practice activities",
     thumbContent: (
       <svg width="48" height="48" viewBox="0 0 24 24" fill="white" opacity={0.9}>
         <rect x="4" y="14" width="16" height="6" rx="1" fill="white" />
@@ -70,7 +73,7 @@ const thumbGradients: Record<string, string> = {
   animals: "linear-gradient(135deg, #7BC142 0%, #4A7728 100%)",
 };
 
-function PracticeBadge() {
+function PracticeBadge({ label }: { label: string }) {
   return (
     <div
       style={{
@@ -95,7 +98,7 @@ function PracticeBadge() {
       <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
         <polygon points="12,2 14.5,9 22,9 16,13.5 18.5,21 12,16.5 5.5,21 8,13.5 2,9 9.5,9" />
       </svg>
-      PRACTICE
+      {label}
     </div>
   );
 }
@@ -314,7 +317,7 @@ export default function EnglishClient() {
                 (e.currentTarget as HTMLDivElement).style.boxShadow = "0 5px 0 rgba(0,0,0,0.2)";
               }}
             >
-              <PracticeBadge />
+              <PracticeBadge label={card.badge} />
 
               <div
                 style={{
