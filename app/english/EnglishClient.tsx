@@ -170,6 +170,7 @@ type ModalState = null | "video" | "phonics" | "success" | "softpass" | "opposit
 export default function EnglishClient() {
   const [modal, setModal] = useState<ModalState>(null);
   const [showOnboarding, setShowOnboarding] = useState(true);
+  const [canDismiss, setCanDismiss] = useState(false);
   const activeCard = useRef<typeof CARDS[0] | null>(null);
 
   return (
@@ -454,19 +455,20 @@ export default function EnglishClient() {
               🔊 Turn your volume up before you start.
             </p>
             <button
-              onClick={() => setShowOnboarding(false)}
+              onClick={canDismiss ? () => setShowOnboarding(false) : undefined}
               style={{
                 background: "#9B3D1E", color: "#fff", border: "none", width: "100%",
                 padding: "13px 20px", borderRadius: 100,
                 fontFamily: "var(--font-fredoka)", fontSize: 15, fontWeight: 600,
-                cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: canDismiss ? "pointer" : "default",
+                display: "flex", alignItems: "center", justifyContent: "center",
                 gap: 8, boxShadow: "0 4px 16px rgba(216,90,48,0.35)",
                 position: "relative", overflow: "hidden",
               }}
             >
               {/* Fill sweeps left → right */}
               <div
-                onAnimationEnd={() => setShowOnboarding(false)}
+                onAnimationEnd={() => setCanDismiss(true)}
                 style={{
                   position: "absolute", inset: 0,
                   background: "#D85A30",
